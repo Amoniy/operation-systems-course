@@ -50,8 +50,16 @@ bool matchesPattern(struct dirent *file, char *path) {
 //    printf("inum\n");
 
     if (arguments.wasInum) {
-        char *str;
-        sprintf(fileStat.st_ino,str,10);
+        char str[64];
+        sprintf(str, "%ld", fileStat.st_ino);
+
+        printf("kek");
+        printf(arguments.inum);
+        printf(" = ");
+        printf(str);
+        printf("kek\n");
+
+
         if (strcmp(arguments.inum, (str)) != 0) {
             return false;
         }
@@ -144,7 +152,6 @@ int main(int argc, char *argv[]) {
             arguments.wasInum = true;
             printf(argv[i + 1]);
             printf("\n");
-            printf("%L\n", atol(argv[i + 1]));
 //            arguments.inum = atoi(argv[i + 1]);
             strcpy(arguments.inum, argv[i + 1]);
         } else if (strcmp(argv[i], "-name") == 0) {
