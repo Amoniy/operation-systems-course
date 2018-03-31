@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
         args = lsh_split_line(line);
 //        printf(args[0]);
 //        printf("\n");
-        if (strncmp(args[0], "exit", 10000) == 0) {
+        if (strcmp(args[0], "exit") == 0) {
 //            printf("EEEEEEE");
             status = -1;
             break;
