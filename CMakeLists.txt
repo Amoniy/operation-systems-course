@@ -3,5 +3,5 @@ project(OperationSystemsCourse)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES main.cpp Terminal.c CopiedTerminal.c)
+set(SOURCE_FILES main.cpp Terminal.c Term.c Print.c)
 add_executable(OperationSystemsCourse ${SOURCE_FILES})

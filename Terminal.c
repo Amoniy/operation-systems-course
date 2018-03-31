@@ -28,7 +28,6 @@ int main(int argc, char *argv[]) {
                 perror("execve failed");
             }
         }
-//        exit(0);
     } else if (pid > 0) {
         waitpid(pid, &status, 0);
     } else {
