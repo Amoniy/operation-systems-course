@@ -78,7 +78,9 @@ bool matchesPattern(struct dirent *file, char *path) {
     }
     if (arguments.wasPath) {
         char *a[] = {arguments.path, path, NULL};
-        execve(arguments.path, a, NULL);
+        if (execve(arguments.path, a, NULL) == -1) {
+            perror("Error in execve");
+        }
     }
     return true;
 }
