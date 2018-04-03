@@ -44,21 +44,9 @@ bool matchesPattern(struct dirent *file, char *path) {
         exit(-1);
     }
 
-//    printf("inum");
-//    printf("%d\n",arguments.inum);
-//    printf("%d",fileStat.st_ino);
-//    printf("inum\n");
-
     if (arguments.wasInum) {
         char str[64];
-        sprintf(str, "%ld", fileStat.st_ino);
-
-        printf("kek");
-        printf(arguments.inum);
-        printf(" = ");
-        printf(str);
-        printf("kek\n");
-
+        sprintf(str, "%llu", fileStat.st_ino);
 
         if (strcmp(arguments.inum, (str)) != 0) {
             return false;
@@ -97,7 +85,6 @@ bool matchesPattern(struct dirent *file, char *path) {
 
 void recursiveDescent(DIR *currentDir, char *path) {
     if (currentDir == NULL) {
-        printf(path);
         perror("Current dir == null");
     }
 
@@ -110,9 +97,6 @@ void recursiveDescent(DIR *currentDir, char *path) {
             continue;
         }
 
-        printf("inode: %ld \n", fileOrDir->d_ino);
-//        printf("name: %s \n", fileOrDir->d_name);
-
         char curPath[256];
         strcpy(curPath, path);
         strcat(curPath, "/");
@@ -120,22 +104,12 @@ void recursiveDescent(DIR *currentDir, char *path) {
 
         switch (fileOrDir->d_type) {
             case DT_REG :
-//                printf("regular file\n");
                 if (matchesPattern(fileOrDir, curPath)) {
-                    printf(curPath);
-                    //
-                    printf("kek");
-                    printf(fileOrDir->d_name);
-                    printf("kek");
-                    //
+                    printf("%s", curPath);
                     printf("\n");
                 }
                 break;
             case DT_DIR :
-//                printf("testing dir=");
-//                printf(curPath);
-//                printf("\n");
-//                printf("directory\n");
                 recursiveDescent(opendir(curPath), curPath);
                 break;
             default :
@@ -150,9 +124,6 @@ int main(int argc, char *argv[]) {
     for (int i = 2; i < argc; i += 2) {
         if (strcmp(argv[i], "-inum") == 0) {
             arguments.wasInum = true;
-            printf(argv[i + 1]);
-            printf("\n");
-//            arguments.inum = atoi(argv[i + 1]);
             strcpy(arguments.inum, argv[i + 1]);
         } else if (strcmp(argv[i], "-name") == 0) {
             arguments.wasName = true;
@@ -166,7 +137,7 @@ int main(int argc, char *argv[]) {
             } else if (argv[i + 1][0] == '-') {
                 arguments.sizeComparator = -1;
             } else {
-                // err
+                perror("Expected format of -size argument: \"[+-=]%d\" was not found");
             }
             arguments.size = atol(argv[i + 1] + 1);
         } else if (strcmp(argv[i], "-nlinks") == 0) {
@@ -176,7 +147,7 @@ int main(int argc, char *argv[]) {
             arguments.wasPath = true;
             strcpy(arguments.path, argv[i + 1]);
         } else {
-            // err
+            perror("Unexpected argument");
         }
     }
     recursiveDescent(opendir(argv[1]), argv[1]);
