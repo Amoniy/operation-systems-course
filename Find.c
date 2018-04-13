@@ -8,7 +8,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <string.h>
 
 struct {
     bool wasInum;
@@ -41,7 +40,6 @@ bool matchesPattern(struct dirent *file, char *path) {
 
     if (stat(path, &fileStat) < 0) {
         perror("Could not open stat");
-        exit(-1);
     }
 
     if (arguments.wasInum) {
@@ -77,10 +75,24 @@ bool matchesPattern(struct dirent *file, char *path) {
         }
     }
     if (arguments.wasPath) {
+
         char *a[] = {arguments.path, path, NULL};
-        if (execve(arguments.path, a, NULL) == -1) {
-            perror("Error in execve");
+
+        int status;
+        pid_t pid = fork();
+        if (pid == 0) {
+
+            if (execve(arguments.path, a, NULL) < 0) {
+                printf("error\n");
+                status = -1;
+                perror("execve failed");
+            }
+        } else if (pid > 0) {
+            waitpid(pid, &status, 0);
+        } else {
+            perror("fork failed");
         }
+
     }
     return true;
 }
@@ -123,7 +135,7 @@ void recursiveDescent(DIR *currentDir, char *path) {
 
 int main(int argc, char *argv[]) {
     initializePattern();
-    for (int i = 2; i < argc; i += 2) {
+    for (int i = 2; i < argc - 1; i += 2) {
         if (strcmp(argv[i], "-inum") == 0) {
             arguments.wasInum = true;
             strcpy(arguments.inum, argv[i + 1]);

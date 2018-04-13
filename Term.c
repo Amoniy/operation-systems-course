@@ -22,6 +22,10 @@ char *lsh_read_line(void) {
         c = getchar();
 
         // If we hit EOF, replace it with a null character and return.
+        if (c == EOF) {
+            printf("Process completed\n");
+            exit(0);
+        }
         if (c == EOF || c == '\n') {
             buffer[position] = '\0';
             return buffer;
@@ -85,18 +89,13 @@ int main(int argc, char *argv[]) {
         printf("> ");
         line = lsh_read_line();
         args = lsh_split_line(line);
-//        printf(args[0]);
-//        printf("\n");
         if (strcmp(args[0], "exit") == 0) {
-//            printf("EEEEEEE");
             status = -1;
             break;
         }
 
         pid_t pid = fork();
         if (pid == 0) {
-//            printf("child\n");
-//            printf("> ");
 
             if (execve(args[0], args, NULL) < 0) {
                 printf("error\n");
@@ -107,7 +106,6 @@ int main(int argc, char *argv[]) {
             free(args);
         } else if (pid > 0) {
             waitpid(pid, &status, 0);
-//            printf("Exit from parent\n");
         } else {
             perror("fork failed");
         }
