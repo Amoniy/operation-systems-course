@@ -15,7 +15,7 @@ int main() {
     void *library_handler;
     int (*f3)();
 
-    library_handler = dlopen("/Users/antonkopitsa/CLionProjects/OperationSystemsCourse/libSecondDynamic.so",
+    library_handler = dlopen("/Users/antonkopitsa/CLionProjects/OperationSystemsCourse/hw4/libSecondDynamic.so",
                              RTLD_LAZY);
     if (!library_handler) {
         fprintf(stderr, "dlopen() error: %s\n", dlerror());
