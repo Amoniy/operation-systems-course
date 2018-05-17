@@ -73,12 +73,14 @@ int main(int argc, char *argv[]) {
             break;
         }
         if (pid == 0) {
-            close(socket_descriptor);
             while (status != -1) {
                 printf("Ожидаем сообщение...\n");
 
                 message_size = recv(sock, buffer, 256, 0); // принимаем сообщение от клиента
-                if (strcmp(buffer, "close") == 0) {
+                if(message_size <= 0) {
+                    break;
+                }
+                if (strcmp(buffer, "exit") == 0) {
                     printf("Закрываем сокет\n");
                     close(sock);
                     status = -1;
