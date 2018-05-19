@@ -94,6 +94,7 @@ int main(int argc, char *argv[]) {
 
                 message_size = recv(client_socket, buffer, 256, 0);
                 if (message_size <= 0) {
+                    close(client_socket);
                     break;
                 }
                 if (strcmp(buffer, "close server") == 0) {
