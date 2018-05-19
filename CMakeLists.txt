@@ -3,5 +3,5 @@ project(OperationSystemsCourse)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES Term.c Print.c Find.c JITCompiler.c MultiplyByTwo.c AddFour.c hw4/Main.c hw4/StaticLib.c hw4/FirstDynamicLib.c hw4/SecondDynamicLib.c hw5/Client.c hw5/Server.c)
+set(SOURCE_FILES hw1/Term.c Print.c hw2/Find.c hw3/JITCompiler.c hw3/MultiplyByTwo.c hw3/AddFour.c hw4/Main.c hw4/StaticLib.c hw4/FirstDynamicLib.c hw4/SecondDynamicLib.c hw5/Client.c hw5/Server.c hw6/Client.c hw6/Server.c)
 add_executable(OperationSystemsCourse ${SOURCE_FILES})
