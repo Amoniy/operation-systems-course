@@ -1,6 +1,5 @@
 #include <stdbool.h>
 #include <sys/_types/_off_t.h>
-#include <sys/_types/_ino64_t.h>
 #include <sys/_types/_nlink_t.h>
 #include <memory.h>
 #include <stdlib.h>
